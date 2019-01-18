@@ -1,11 +1,11 @@
 const path = require(`path`);
 
 module.exports = {
+  pathPrefix: "/anetart",
   siteMetadata: {
     title: "Anette - Graphic Designer",
     author: "Pieter Wolmarans",
-    description: "Graphic Design Portfolio for Annette Wolmarans",
-    pathPrefix: "/anetart",
+    description: "Graphic Design Portfolio for Annette Wolmarans"
   },
   plugins: [
     'gatsby-plugin-react-helmet',
