@@ -6,6 +6,7 @@ import Layout from '../components/layout'
 import styled from 'styled-components';
 import Gallery from '../components/Gallery'
 import Skills from '../components/Skills';
+// import {graphql} from 'gatsby';
 
 // import thumb01 from '../assets/images/b-cards/01.jpg'
 // import thumb02 from '../assets/images/b-cards/02.jpg'
@@ -32,14 +33,17 @@ import Skills from '../components/Skills';
 
 const WorkNavContainer = styled.div`
     display: flex;
-    flex-wrap: nowrap;
+    max-width: 100%;
+    flex-wrap: wrap;
     margin: 0px auto 15px;
-    padding: '5px';
+    padding: 5px;
     justify-content: center;
+    background-color: #eaf8ff;
+    border-radius: 5px;
 `;
 
 const WorkBtn = styled.button`
-    margin: auto 2px;
+    margin: 2px;
 `;
 
 class HomeIndex extends React.Component {
@@ -93,6 +97,18 @@ class HomeIndex extends React.Component {
         this.setState({workCategory: category});
     }
 
+    createImgObjArray = dataArray => {
+        return dataArray.map((obj, i) => (
+            {
+              src: obj.node.childImageSharp.fluid.src,
+              srcSet: obj.node.childImageSharp.fluid.srcSet,
+              id: obj.node.id,
+              caption: obj.node.childImageSharp.fluid.originalName,
+              fluid: obj.node.childImageSharp.fluid
+            }
+          ))
+    }
+
     render() {
         const siteTitle = "Gatsby Starter - Strata"
         const siteDescription = "Site description"
@@ -128,11 +144,24 @@ class HomeIndex extends React.Component {
                         <WorkNavContainer>
                             <WorkBtn onClick={() => this.workBtnHandler('bc')} className="button">Business Cards</WorkBtn>
                             <WorkBtn onClick={() => this.workBtnHandler('logos')} className="button">Logo Designs</WorkBtn>
-                            <WorkBtn onClick={this.workBtnHandler} className="button">Button 3</WorkBtn>
+                            <WorkBtn onClick={() => this.workBtnHandler('branding')} className="button">Branding</WorkBtn>
+                            <WorkBtn onClick={() => this.workBtnHandler('flexo')} className="button">Flexo Printing</WorkBtn>
+                            <WorkBtn onClick={() => this.workBtnHandler('litho')} className="button">Litho Printing</WorkBtn>
+                            <WorkBtn onClick={() => this.workBtnHandler('cal')} className="button">Calendars</WorkBtn>
+                            <WorkBtn onClick={() => this.workBtnHandler('tickets')} className="button">Tickets</WorkBtn>
+                            <WorkBtn onClick={() => this.workBtnHandler('packaging')} className="button">Packaging</WorkBtn>
+                            <WorkBtn onClick={() => this.workBtnHandler('misc')} className="button">Miscellaneous</WorkBtn>
                         </WorkNavContainer>
 
-                        {this.state.workCategory === 'bc' && <Gallery />}
-                        {this.state.workCategory === 'logos' && <div>Coming Soon...</div>}
+                        {this.state.workCategory === 'bc' && <Gallery imgObjArray={this.createImgObjArray(this.props.data.bCards.edges)}/>}
+                        {this.state.workCategory === 'logos' && <Gallery imgObjArray={this.createImgObjArray(this.props.data.logos.edges)}/>}
+                        {this.state.workCategory === 'branding' && <Gallery imgObjArray={this.createImgObjArray(this.props.data.branding.edges)}/>}
+                        {this.state.workCategory === 'flexo' && <Gallery imgObjArray={this.createImgObjArray(this.props.data.flexo.edges)}/>}
+                        {this.state.workCategory === 'litho' && <Gallery imgObjArray={this.createImgObjArray(this.props.data.litho.edges)}/>}
+                        {this.state.workCategory === 'cal' && <Gallery imgObjArray={this.createImgObjArray(this.props.data.cal.edges)}/>}
+                        {this.state.workCategory === 'tickets' && <Gallery imgObjArray={this.createImgObjArray(this.props.data.tickets.edges)}/>}
+                        {this.state.workCategory === 'packaging' && <Gallery imgObjArray={this.createImgObjArray(this.props.data.packaging.edges)}/>}
+                        {this.state.workCategory === 'misc' && <Gallery imgObjArray={this.createImgObjArray(this.props.data.misc.edges)}/>}
                         {/* <Gallery images={DEFAULT_IMAGES.map(({ id, src, thumbnail, caption, description }) => ({
                             src,
                             thumbnail,
@@ -189,5 +218,145 @@ class HomeIndex extends React.Component {
         )
     }
 }
+
+export const query = graphql`
+query {
+    bCards: allFile(sort: {fields: [name], order: ASC}, filter: {relativeDirectory: {eq: "b-cards"}}) {
+      edges {
+        node {
+          childImageSharp {
+            fluid(maxWidth: 787) {
+            ...GatsbyImageSharpFluid_noBase64
+              srcSet
+              src
+              originalName
+            }
+          }
+          id
+        }
+      }
+    }
+    logos: allFile(sort: {fields: [name], order: ASC}, filter: {relativeDirectory: {eq: "logos"}}) {
+      edges {
+        node {
+          childImageSharp {
+            fluid(maxWidth: 787) {
+            ...GatsbyImageSharpFluid_noBase64
+              srcSet
+              src
+              originalName
+            }
+          }
+          id
+        }
+      }
+    }
+    branding: allFile(sort: {fields: [name], order: ASC}, filter: {relativeDirectory: {eq: "branding"}}) {
+        edges {
+          node {
+            childImageSharp {
+              fluid(maxWidth: 787) {
+              ...GatsbyImageSharpFluid_noBase64
+                srcSet
+                src
+                originalName
+              }
+            }
+            id
+          }
+        }
+      }
+    flexo: allFile(sort: {fields: [name], order: ASC}, filter: {relativeDirectory: {eq: "flexo"}}) {
+        edges {
+          node {
+            childImageSharp {
+              fluid(maxWidth: 787) {
+              ...GatsbyImageSharpFluid_noBase64
+                srcSet
+                src
+                originalName
+              }
+            }
+            id
+          }
+        }
+      }
+    litho: allFile(sort: {fields: [name], order: ASC}, filter: {relativeDirectory: {eq: "litho"}}) {
+        edges {
+          node {
+            childImageSharp {
+              fluid(maxWidth: 787) {
+              ...GatsbyImageSharpFluid_noBase64
+                srcSet
+                src
+                originalName
+              }
+            }
+            id
+          }
+        }
+      }
+    cal: allFile(sort: {fields: [name], order: ASC}, filter: {relativeDirectory: {eq: "cal"}}) {
+        edges {
+          node {
+            childImageSharp {
+              fluid(maxWidth: 787) {
+              ...GatsbyImageSharpFluid_noBase64
+                srcSet
+                src
+                originalName
+              }
+            }
+            id
+          }
+        }
+      }
+    tickets: allFile(sort: {fields: [name], order: ASC}, filter: {relativeDirectory: {eq: "tickets"}}) {
+        edges {
+          node {
+            childImageSharp {
+              fluid(maxWidth: 787) {
+              ...GatsbyImageSharpFluid_noBase64
+                srcSet
+                src
+                originalName
+              }
+            }
+            id
+          }
+        }
+      }
+    packaging: allFile(sort: {fields: [name], order: ASC}, filter: {relativeDirectory: {eq: "packaging"}}) {
+        edges {
+          node {
+            childImageSharp {
+              fluid(maxWidth: 787) {
+              ...GatsbyImageSharpFluid_noBase64
+                srcSet
+                src
+                originalName
+              }
+            }
+            id
+          }
+        }
+      }
+    misc: allFile(sort: {fields: [name], order: ASC}, filter: {relativeDirectory: {eq: "misc"}}) {
+        edges {
+          node {
+            childImageSharp {
+              fluid(maxWidth: 787) {
+              ...GatsbyImageSharpFluid_noBase64
+                srcSet
+                src
+                originalName
+              }
+            }
+            id
+          }
+        }
+      }
+  }
+`
 
 export default HomeIndex

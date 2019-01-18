@@ -4,7 +4,7 @@ import Lightbox from 'react-images'
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
 import Img from 'gatsby-image'
 // import { graphql } from 'gatsby';
-import { StaticQuery, graphql } from 'gatsby'
+// import { StaticQuery, graphql } from 'gatsby'
 
 class Gallery extends Component {
   constructor() {
@@ -58,80 +58,36 @@ class Gallery extends Component {
 
     this.gotoNext()
   }
-  renderGallery() {
-    const { images } = this.props
 
-    if (!images) return
-
-    const gallery = images.map((obj, i) => {
-      return (
-        <article className="6u 12u$(xsmall) work-item" key={i}>
-          <a
-            className="image fit thumb"
-            href={obj.src}
-            onClick={e => this.openLightbox(i, e)}
-          >
-            <img src={obj.thumbnail} alt="" />
-          </a>
-
-          <h3>{obj.caption}</h3>
-          <p>{obj.description}</p>
-        </article>
-      )
-    })
-
-    return <div className="row">{gallery}</div>
-  }
   render() {
     // const {edges} = this.props.data.allFile.edges;
+    // const imgObjArray =
+    //   this.props.imageData.edges.map((obj, i) => (
+    //     {
+    //       src: obj.node.childImageSharp.fluid.src,
+    //       srcSet: obj.node.childImageSharp.fluid.srcSet,
+    //       id: obj.node.id,
+    //       caption: obj.node.childImageSharp.fluid.originalName,
+    //       fluid: obj.node.childImageSharp.fluid
+    //     }
+    //   ))
+    const {imgObjArray} = this.props;
 
     return (
-      <StaticQuery
-        query={graphql`
-          query {
-            allFile(sort: {fields: [name], order: ASC}, filter: {relativeDirectory: {eq: "b-cards"}}) {
-              edges {
-                node {
-                  childImageSharp {
-                    fluid(maxWidth: 787) {
-                      ...GatsbyImageSharpFluid_noBase64
-                      srcSet
-                      src
-                      originalName
-                    }
-                  }
-                  id
-                }
-              }
-            }
-          }
-        `}
-        render={data => {
-          
-          const imgObjArray =
-            data.allFile.edges.map((obj, i) => (
-              {
-                src: obj.node.childImageSharp.fluid.src,
-                id: obj.node.id,
-                caption: obj.node.childImageSharp.fluid.originalName
-              }
-            ))
-
-          return (
-          <>
+      <>
             {/* {this.renderGallery()} */}
             <ResponsiveMasonry
               columnsCountBreakPoints={{ 350: 2, 600: 3, 750: 4 }}
             >
               <Masonry gutter="5px">
-                {data.allFile.edges.map((imgObj, i) => (
+                {imgObjArray.map((imgObj, i) => (
                   <a
                     // className="image fit thumb"
                     key={'mi' + i}
-                    href={imgObj.node.childImageSharp.fluid.srcSet}
+                    href={imgObj.srcSet}
                     onClick={e => this.openLightbox(i, e)}
                   >
-                    <Img fluid={imgObj.node.childImageSharp.fluid} />
+                    <Img fluid={imgObj.fluid} />
                   </a>
                 ))}
               </Masonry>
@@ -147,9 +103,6 @@ class Gallery extends Component {
               onClose={this.closeLightbox}
             />
           </>
-        )
-      }}
-      />
     )
   }
 }
