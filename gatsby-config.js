@@ -1,7 +1,7 @@
 const path = require(`path`);
 
 module.exports = {
-  pathPrefix: "/anetart",
+  // pathPrefix: "/anetart",
   siteMetadata: {
     title: "Anette - Graphic Designer",
     author: "Pieter Wolmarans",
